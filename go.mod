@@ -1,3 +1,3 @@
-module github.com/yvcruz/todus_message_service
+module github.com/yvcruz/tms
 
 go 1.18
