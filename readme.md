@@ -19,3 +19,10 @@ func main() {
 	tms.SendMessageToGroup("Hello group!!")
 }
 ```
+
+# Console
+ > go install github.com/yvcruz/tms
+ 
+ ```bash
+ tms send --to "5312345678" --message "Hello!" --username "YOUR_USERNAME" --password "YOUR_USERNAME_PASSWORD"
+ ```
