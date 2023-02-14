@@ -1,4 +1,4 @@
-package todus_message_service
+package tms
 
 import (
 	"testing"

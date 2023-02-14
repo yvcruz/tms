@@ -272,5 +272,5 @@ func (tms TodusMessageService) SendMessageToUser(username, message string) bool 
 		}
 		return false
 	}
-	return false
+	return true
 }
