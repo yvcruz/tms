@@ -5,7 +5,6 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
-	"io/ioutil"
 	"log"
 	"net/http"
 	"os"
@@ -111,11 +110,11 @@ func (tms TodusMessageService) getTokenFromUrl() (string, error) {
 	token := m["tk"].(string)
 	refresh := m["rtk"].(string)
 
-	if err = ioutil.WriteFile("./tk", []byte(token), 0644); err != nil {
+	if err = os.WriteFile(fmt.Sprintf("./tms/%s/tk", tms.Config.Username), []byte(token), 0644); err != nil {
 		panic(err)
 	}
 
-	if err = ioutil.WriteFile("./rtk", []byte(refresh), 0644); err != nil {
+	if err = os.WriteFile(fmt.Sprintf("./tms/%s/rtk", tms.Config.Username), []byte(refresh), 0644); err != nil {
 		panic(err)
 	}
 	tms.Token = token
@@ -145,13 +144,13 @@ func (tms TodusMessageService) refreshToken() (string, error) {
 			}
 			token := m["tk"].(string)
 			refresh := m["rtk"].(string)
-			ftk, err := os.Create("./rtk")
+			ftk, err := os.Create(fmt.Sprintf("./tms/%s/tk", tms.Config.Username))
 			if err != nil {
 				return "", err
 
 			}
 			defer ftk.Close()
-			frtk, err := os.Create("./rtk")
+			frtk, err := os.Create(fmt.Sprintf("./tms/%s/rtk", tms.Config.Username))
 			if err != nil {
 				return "", err
 			}
@@ -179,11 +178,11 @@ func (tms TodusMessageService) refreshToken() (string, error) {
 }
 
 func (tms TodusMessageService) getTokenFromFile() (string, string, error) {
-	tk, err := ioutil.ReadFile("./tk")
+	tk, err := os.ReadFile(fmt.Sprintf("./tms/%s/tk", tms.Config.Username))
 	if err != nil {
 		return "", "", err
 	}
-	rtk, err := ioutil.ReadFile("./rtk")
+	rtk, err := os.ReadFile(fmt.Sprintf("./tms/%s/rtk", tms.Config.Username))
 	if err != nil {
 		return "", "", err
 	}
@@ -191,11 +190,11 @@ func (tms TodusMessageService) getTokenFromFile() (string, string, error) {
 }
 
 func (tms TodusMessageService) clearTokenFile() error {
-	err := os.Remove("./tk")
+	err := os.Remove(fmt.Sprintf("./tms/%s/tk", tms.Config.Username))
 	if err != nil {
 		return err
 	}
-	err = os.Remove("./rtk")
+	err = os.Remove(fmt.Sprintf("./tms/%s/rtk", tms.Config.Username))
 	if err != nil {
 		return err
 	}
