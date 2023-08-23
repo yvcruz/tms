@@ -110,6 +110,11 @@ func (tms TodusMessageService) getTokenFromUrl() (string, error) {
 	token := m["tk"].(string)
 	refresh := m["rtk"].(string)
 
+	path := fmt.Sprintf("tms/%s", tms.Config.Username)
+	if err = os.MkdirAll(path, os.ModePerm); err != nil {
+		panic(err)
+	}
+
 	if err = os.WriteFile(fmt.Sprintf("./tms/%s/tk", tms.Config.Username), []byte(token), 0644); err != nil {
 		panic(err)
 	}
